@@ -10,7 +10,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"*"
+		"workspaceContains:.circleci/config.yml"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
