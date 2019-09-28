@@ -14,6 +14,17 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"configuration": [
+			{
+				"title": "CircleCI Status configuration",
+				"properties": {
+					"circleciStatus.apiToken": {
+						"type": "string",
+						"markdownDescription": "CircleCI's API Token. See the [CircleCI docs](https://circleci.com/docs/api/#add-an-api-token) for getting API Token."
+					}
+				}
+			}
+		],
 		"commands": [
 			{
 				"command": "extension.helloWorld",
