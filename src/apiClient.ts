@@ -33,7 +33,6 @@ export class ApiClient {
 		return this.requestApi('me')
 			.then((response : any) => {
 				this.userName = response.data.name;
-				return this.userName;
 			})
 			.catch((err : any) => console.error(err));
 	}
