@@ -18,7 +18,7 @@ By default, auto-reloading by 1 minute.
 ### Additional features
 By clicking build status, you can use additional features.
 
-![additional _features](https://user-images.githubusercontent.com/22453562/65831297-1217f100-e2f3-11e9-9426-8dda700eca6f.gif)
+![additional _features3](https://user-images.githubusercontent.com/22453562/65831912-3d9dda00-e2f9-11e9-9243-f3bb4a5f0081.gif)
 
 #### Retry latest build
 You cau retry latest build.
