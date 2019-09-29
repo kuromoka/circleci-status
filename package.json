@@ -27,10 +27,17 @@
     ],
     "commands": [
       {
-        "command": "extension.helloWorld",
-        "title": "Hello World"
+        "command": "myExtension.sayHello",
+        "title": "Say Hello"
       }
-    ]
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "myExtension.sayHello"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

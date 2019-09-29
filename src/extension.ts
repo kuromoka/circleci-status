@@ -2,18 +2,26 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { ApiClient, BuildNode } from './apiClient';
-import { BuildStatusBar } from './buildStatusBar';
+import { StatusBar } from './statusBar';
+import { QuickPick } from './quickPick';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-  const statusBar = new BuildStatusBar();
+  const statusBarCommand = 'circleciStatus.selectCommand';
+  const quickPick = new QuickPick();
+  context.subscriptions.push(vscode.commands.registerCommand(statusBarCommand, () => {
+    quickPick.showItem();
+  }));
+
+  const statusBar = new StatusBar(statusBarCommand);
   context.subscriptions.push(statusBar.item);
 
   const updateBuildStatus = (apiClient: ApiClient) => {
     apiClient.getRecentBuilds()
-      .then((recentBuils: BuildNode[]) => {
-        statusBar.updateItem(recentBuils[0]);
+      .then((recentBuilds: BuildNode[]) => {
+        statusBar.updateItem(recentBuilds[0]);
+        quickPick.updateItem(recentBuilds);
       });
   };
 

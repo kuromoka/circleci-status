@@ -38,13 +38,13 @@ export class ApiClient {
   }
 
   public getRecentBuilds(): Promise<any> {
-    let recentBuils: BuildNode[] = [];
+    let recentBuilds: BuildNode[] = [];
     const path: string = 'project/' + this.vcsType + '/' + this.userName + '/' + this.projectName;
 
     return this.requestApi(path)
       .then(response => {
         response.data.forEach((element: any) => {
-          recentBuils.push({
+          recentBuilds.push({
             status: element.status,
             buildUrl: element.build_url,
             buildNum: element.build_num,
@@ -53,7 +53,7 @@ export class ApiClient {
             committerName: element.committer_name,
           });
         });
-        return recentBuils;
+        return recentBuilds;
       })
       .catch(err => console.error(err));
   }

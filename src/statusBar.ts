@@ -1,11 +1,12 @@
 import * as vscode from 'vscode';
 import { BuildNode } from './apiClient';
 
-export class BuildStatusBar {
+export class StatusBar {
   private statusBarItem: vscode.StatusBarItem;
 
-  constructor() {
+  constructor(statusBarCommand: string) {
     this.statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
+    this.statusBarItem.command = statusBarCommand;
   }
 
   get item() {
