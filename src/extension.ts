@@ -7,17 +7,17 @@ import { BuildStatusBar } from './buildStatusBar';
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-	const apiClient = new ApiClient();
+  const apiClient = new ApiClient();
 
-	apiClient.setUserName()
-		.then(() => {
-			return apiClient.getRecentBuilds();
-		})
-		.then((recentBuils: BuildNode[]) => {
-			const statusBar = new BuildStatusBar(recentBuils[0]);
-			context.subscriptions.push(statusBar.item);
-			statusBar.updateItem();
-		});
+  apiClient.setUserName()
+    .then(() => {
+      return apiClient.getRecentBuilds();
+    })
+    .then((recentBuils: BuildNode[]) => {
+      const statusBar = new BuildStatusBar(recentBuils[0]);
+      context.subscriptions.push(statusBar.item);
+      statusBar.updateItem();
+    });
 }
 
 // this method is called when your extension is deactivated
