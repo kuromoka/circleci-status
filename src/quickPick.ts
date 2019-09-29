@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { BuildNode } from './apiClient';
+import { Client, BuildNode } from './Client';
 
 export class QuickPick {
   static readonly LATEST_RETRY_ITEM_LABEL: string = 'Restart Latest Build';
@@ -19,9 +19,13 @@ export class QuickPick {
     };
   }
 
-  public showItem() { 
-    vscode.window.showQuickPick([this.latestRetryItem, this.latestBuildUrlItem]).then(selectedItem => {
+  public async showItem(client: Client) { 
+    await vscode.window.showQuickPick([this.latestRetryItem, this.latestBuildUrlItem]).then(selectedItem => {
       switch (selectedItem!.label) {
+        case QuickPick.LATEST_RETRY_ITEM_LABEL:
+            client.retryBuild(this.recentBuilds[0].buildNum);
+            client.updateBuildStatus();
+            break;
         case QuickPick.LATEST_BUILD_URL_ITEM_LABEL:
           vscode.env.openExternal(vscode.Uri.parse(this.recentBuilds[0].buildUrl));
           break;

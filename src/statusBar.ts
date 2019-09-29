@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { BuildNode } from './apiClient';
+import { BuildNode } from './Client';
 
 export class StatusBar {
   private statusBarItem: vscode.StatusBarItem;
