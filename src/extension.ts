@@ -13,7 +13,7 @@ export function activate(context: vscode.ExtensionContext) {
 		.then(() => {
 			return apiClient.getRecentBuilds();
 		})
-		.then((recentBuils : BuildNode[]) => {
+		.then((recentBuils: BuildNode[]) => {
 			const statusBar = new BuildStatusBar(recentBuils[0]);
 			context.subscriptions.push(statusBar.item);
 			statusBar.updateItem();

@@ -28,18 +28,18 @@ export class ApiClient {
 		this.projectName = vscode.workspace.name;
 	}
 
-	public setUserName() : Promise<any> {
+	public setUserName(): Promise<any> {
 		// set username from '/me' result
 		return this.requestApi('me')
-			.then((response : any) => {
+			.then((response) => {
 				this.userName = response.data.name;
 			})
-			.catch((err : any) => console.error(err));
+			.catch((err) => console.error(err));
 	}
 
-	public getRecentBuilds() : Promise<any> {
+	public getRecentBuilds(): Promise<any> {
 		let recentBuils: BuildNode[] = [];
-		const path : string = 'project/' + this.vcsType + '/' + this.userName + '/' + this.projectName;
+		const path: string = 'project/' + this.vcsType + '/' + this.userName + '/' + this.projectName;
 
 		return this.requestApi(path)
 			.then(response => {
@@ -58,7 +58,7 @@ export class ApiClient {
 			.catch(err => console.error(err));
 	}
 
-	private async requestApi(path : string) : Promise<any> {
+	private async requestApi(path: string): Promise<any> {
 		try {
 			const response = await axios.get(ApiClient.API_ENTRY_POINT + '/' + path + '?circle-token=' + this.apiToken);
 			return response;

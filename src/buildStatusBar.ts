@@ -15,7 +15,7 @@ export class BuildStatusBar {
 	}
 
 	public updateItem() {
-		let text : string;
+		let text: string;
 		switch (this.recentBuild.status) {
 			case 'success':
 				text = 'success!';
