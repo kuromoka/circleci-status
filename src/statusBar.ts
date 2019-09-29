@@ -16,17 +16,23 @@ export class StatusBar {
   public updateItem(recentBuild: BuildNode) {
     let text: string;
     switch (recentBuild.status) {
-      case 'success':
-        text = 'success!';
-        break;
+      case 'queued':
+          text = 'CircleCI Status: ${kebab-horizontal} QUEUED';
+          break;
       case 'running':
-        text = 'running';
+        text = 'CircleCI Status: ${kebab-horizontal} RUNNING';
         break;
       case 'failed':
-        text = 'failed';
+        text = 'CircleCI Status: $(stop) FAILED';
         break;
+      case 'success':
+          text = 'CircleCI Status: $(check) SUCCESS';
+          break;
+      case 'canceled':
+          text = 'CircleCI Status: $(circle-slash) CANCELED';
+          break;
       default:
-        text = 'unknown';
+        text = 'CircleCI Status: $(question) UNKNOWN';
         break;
     }
 

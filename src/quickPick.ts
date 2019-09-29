@@ -2,9 +2,9 @@ import * as vscode from 'vscode';
 import { Client, BuildNode } from './Client';
 
 export class QuickPick {
-  static readonly LATEST_RETRY_ITEM_LABEL: string = 'Retry latest build';
-  static readonly LATEST_BUILD_URL_ITEM_LABEL: string = 'Open latest build url';
-  static readonly SHOW_BUILD_LIST_ITEM_LABEL: string = 'Show build list';
+  static readonly LATEST_RETRY_ITEM_LABEL: string = 'CircleCI Status: Retry latest build';
+  static readonly LATEST_BUILD_URL_ITEM_LABEL: string = 'CircleCI Status: Open latest build url';
+  static readonly SHOW_BUILD_LIST_ITEM_LABEL: string = 'CircleCI Status: Show build list';
 
   private recentBuilds: BuildNode[];
   private latestRetryItem: vscode.QuickPickItem;
@@ -15,15 +15,12 @@ export class QuickPick {
     this.recentBuilds = [];
     this.latestRetryItem = {
       label: QuickPick.LATEST_RETRY_ITEM_LABEL,
-      detail: 'Retry latest build'
     };
     this.latestBuildUrlItem = {
       label: QuickPick.LATEST_BUILD_URL_ITEM_LABEL,
-      detail: 'Open latest build url'
     };
     this.showBuildListItem = {
       label: QuickPick.SHOW_BUILD_LIST_ITEM_LABEL,
-      detail: 'Show build list'
     };
   }
 
@@ -42,7 +39,7 @@ export class QuickPick {
             let items: vscode.QuickPickItem[] = [];
             this.recentBuilds.forEach((recentBuild: BuildNode) => {
               items.push({
-                label: recentBuild.status + ': ' + recentBuild.branch + ' #' + recentBuild.buildNum,
+                label: recentBuild.status.toUpperCase() + ': ' + recentBuild.branch + ' #' + recentBuild.buildNum,
                 detail: recentBuild.subject
               });
             });
