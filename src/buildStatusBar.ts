@@ -2,21 +2,19 @@ import * as vscode from 'vscode';
 import { BuildNode } from './apiClient';
 
 export class BuildStatusBar {
-  private recentBuild: BuildNode;
-  private _item: vscode.StatusBarItem;
+  private statusBarItem: vscode.StatusBarItem;
 
-  constructor(recentBuild: BuildNode ) {
-    this.recentBuild = recentBuild;
-    this._item = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
+  constructor() {
+    this.statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
   }
 
   get item() {
-    return this._item;
+    return this.statusBarItem;
   }
 
-  public updateItem() {
+  public updateItem(recentBuild: BuildNode) {
     let text: string;
-    switch (this.recentBuild.status) {
+    switch (recentBuild.status) {
       case 'success':
         text = 'success!';
         break;
@@ -31,7 +29,7 @@ export class BuildStatusBar {
         break;
     }
 
-    this._item.text = text;
-    this._item.show();
+    this.statusBarItem.text = text;
+    this.statusBarItem.show();
   }
 }
