@@ -27,7 +27,8 @@ You cau retry latest build.
 Open latest build url on CircleCI.
 
 #### Show build list
-Show build list.
+Show build list include past builds.
+
 <img width="603" alt="スクリーンショット 2019-09-29 20 05 07" src="https://user-images.githubusercontent.com/22453562/65831450-77201680-e2f4-11e9-8cba-7bad933834b7.png">
 
 ## Feedback
