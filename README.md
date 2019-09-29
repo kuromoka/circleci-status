@@ -1,65 +1,37 @@
-# circleci-status README
+# [WIP] circleci-status
 
-This is the README for your extension "circleci-status". After writing up a brief description, we recommend including the following sections.
+CircleCI Status is a VSCode extension to check CircleCI build status. 
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+It's still under development...
 
-For example if there is an image subfolder under your extension project workspace:
+features and screenshots may be chenged 😣
 
-\!\[feature X\]\(images/feature-x.png\)
+### Latest build status on status bar
+Here is SUCCESS status. Also supporting other status(RUNNING, FAILED etc...)
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+By default, auto-reloading by 1 minute.
 
-## Requirements
+<img width="164" alt="スクリーンショット 2019-09-29 19 29 20" src="https://user-images.githubusercontent.com/22453562/65831069-53f36800-e2f0-11e9-8443-8a9816de84a6.png">
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+### Additional features
+By clicking build status, you can use additional features.
 
-## Extension Settings
+![additional _features](https://user-images.githubusercontent.com/22453562/65831297-1217f100-e2f3-11e9-9426-8dda700eca6f.gif)
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+#### Retry latest build
+You cau retry latest build.
 
-For example:
+#### Open latest build url
+Open latest build url on CircleCI.
 
-This extension contributes the following settings:
+#### Show build list
+Show build list.
+<img width="603" alt="スクリーンショット 2019-09-29 20 05 07" src="https://user-images.githubusercontent.com/22453562/65831450-77201680-e2f4-11e9-8cba-7bad933834b7.png">
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+## Feedback
+Feel free to open issue or contact [@kuromoka16](https://twitter.com/kuromoka16).
 
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+## License
+MIT
