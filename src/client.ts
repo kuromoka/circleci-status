@@ -10,6 +10,7 @@ export interface BuildNode {
   subject: string;
   branch: string;
   committerName: string;
+  usageQueuedAt: string;
 }
 
 export class Client {
@@ -63,10 +64,9 @@ export class Client {
 
   public retryBuild(buildNum: number): Promise<any> {
     const path: string = 'project/' + this.vcsType + '/' + this.userName + '/' + this.projectName + '/' + buildNum + '/' + 'retry';
-    console.log(path);
 
     return this.requestApiWithPost(path)
-      .then((response) => {
+      .then(() => {
         vscode.window.showInformationMessage('Start to retry build');
       })
       .catch((err) => console.error(err));
@@ -92,9 +92,10 @@ export class Client {
             status: element.status,
             buildUrl: element.build_url,
             buildNum: element.build_num,
-            subject: element.subject,
+            subject: element.subject === null ? '' : element.subject,
             branch: element.branch,
-            committerName: element.committer_name,
+            committerName: element.committer_name === null ? '' : element.committer_name,
+            usageQueuedAt: element.usage_queued_at
           });
         });
         return recentBuilds;

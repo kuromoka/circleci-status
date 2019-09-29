@@ -17,10 +17,10 @@ export class StatusBar {
     let text: string;
     switch (recentBuild.status) {
       case 'queued':
-          text = 'CircleCI Status: ${kebab-horizontal} QUEUED';
+          text = 'CircleCI Status: $(kebab-horizontal) QUEUED';
           break;
       case 'running':
-        text = 'CircleCI Status: ${kebab-horizontal} RUNNING';
+        text = 'CircleCI Status: $(kebab-horizontal) RUNNING';
         break;
       case 'failed':
         text = 'CircleCI Status: $(stop) FAILED';

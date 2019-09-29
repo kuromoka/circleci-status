@@ -24,8 +24,8 @@ export class QuickPick {
     };
   }
 
-  public async showItem(client: Client) { 
-    await vscode.window.showQuickPick([this.latestRetryItem, this.latestBuildUrlItem, this.showBuildListItem]).then(selectedItem => {
+  public showItem(client: Client) { 
+    vscode.window.showQuickPick([this.latestRetryItem, this.latestBuildUrlItem, this.showBuildListItem]).then(selectedItem => {
       switch (selectedItem!.label) {
         case QuickPick.LATEST_RETRY_ITEM_LABEL:
             client.retryBuild(this.recentBuilds[0].buildNum).then(() => {
@@ -40,7 +40,7 @@ export class QuickPick {
             this.recentBuilds.forEach((recentBuild: BuildNode) => {
               items.push({
                 label: recentBuild.status.toUpperCase() + ': ' + recentBuild.branch + ' #' + recentBuild.buildNum,
-                detail: recentBuild.subject
+                detail: recentBuild.committerName + ' ' + recentBuild.subject
               });
             });
             vscode.window.showQuickPick(items);
