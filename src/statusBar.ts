@@ -36,7 +36,7 @@ export class StatusBar {
     return this.apiClient.getRecentBuilds()
       .then((recentBuilds: Types.RecentBuild[]) => {
         this.updateItem(recentBuilds[0]);
-        this.quickPick.updateItem(recentBuilds);
+        this.quickPick.updateRecentBuilds(recentBuilds);
       });
   }
 

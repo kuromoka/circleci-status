@@ -28,7 +28,7 @@ export class QuickPick {
     };
   }
 
-  public updateItem(recentBuilds: Types.RecentBuild[]) {
+  public updateRecentBuilds(recentBuilds: Types.RecentBuild[]) {
     this.recentBuilds = recentBuilds;
   }
 
