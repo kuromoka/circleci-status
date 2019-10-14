@@ -33,31 +33,38 @@ export class QuickPick {
   }
 
   public async showItem(statusBar: StatusBar) { 
-    if (this.recentBuilds.length > 0) {
-      const selectedItem = await vscode.window.showQuickPick([this.latestRetryItem, this.latestBuildUrlItem, this.showBuildListItem]);
-      switch (selectedItem!.label) {
-        case QuickPick.LATEST_RETRY_ITEM_LABEL:
-          await this.apiClient.retryBuild(this.recentBuilds[0].buildNum);
-          statusBar.updateBuildStatus();
-          break;
-        case QuickPick.LATEST_BUILD_URL_ITEM_LABEL:
-          vscode.env.openExternal(vscode.Uri.parse(this.recentBuilds[0].buildUrl));
-          break;
-        case QuickPick.SHOW_BUILD_LIST_ITEM_LABEL:
-            let items: Types.BuildListQuickPickItem[] = [];
-            this.recentBuilds.forEach((recentBuild: Types.RecentBuild) => {
-              items.push({
-                buildUrl: recentBuild.buildUrl,
-                label: recentBuild.status.toUpperCase() + ': ' + recentBuild.branch + ' #' + recentBuild.buildNum,
-                detail: recentBuild.committerName + ' ' + recentBuild.subject
-              });
-            });
-            const selectedBuildListItem = await vscode.window.showQuickPick(items);
-            vscode.env.openExternal(vscode.Uri.parse(selectedBuildListItem!.buildUrl));
-            break;
-        default:
-          break;
-      }
+    if (this.recentBuilds.length === 0) {
+      return;
+    }
+
+    const selectedItem = await vscode.window.showQuickPick([this.latestRetryItem, this.latestBuildUrlItem, this.showBuildListItem]);
+    if (!selectedItem) {
+      return;
+    }
+    switch (selectedItem.label) {
+      case QuickPick.LATEST_RETRY_ITEM_LABEL:
+        await this.apiClient.retryBuild(this.recentBuilds[0].buildNum);
+        statusBar.updateBuildStatus();
+        break;
+      case QuickPick.LATEST_BUILD_URL_ITEM_LABEL:
+        vscode.env.openExternal(vscode.Uri.parse(this.recentBuilds[0].buildUrl));
+        break;
+      case QuickPick.SHOW_BUILD_LIST_ITEM_LABEL:
+        let items: Types.BuildListQuickPickItem[] = [];
+        this.recentBuilds.forEach((recentBuild: Types.RecentBuild) => {
+          items.push({
+            buildUrl: recentBuild.buildUrl,
+            label: recentBuild.status.toUpperCase() + ': ' + recentBuild.branch + ' #' + recentBuild.buildNum,
+            detail: recentBuild.committerName + ' ' + recentBuild.subject
+          });
+        });
+        const selectedBuildListItem = await vscode.window.showQuickPick(items);
+        if (selectedBuildListItem) {
+          vscode.env.openExternal(vscode.Uri.parse(selectedBuildListItem.buildUrl))
+        }
+        break;
+      default:
+        break;
     }
   }
 }

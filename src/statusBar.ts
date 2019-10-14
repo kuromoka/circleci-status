@@ -19,24 +19,28 @@ export class StatusBar {
   }
 
   public async setup() {
-      this.context.subscriptions.push(vscode.commands.registerCommand(StatusBar.COMMAND_NAME, async () => {
-        try {
-          await this.quickPick.showItem(this);
-        } catch (err) {
-          console.log(err)
-        }
-      }));
-      this.statusBarItem.command = StatusBar.COMMAND_NAME;
-      this.context.subscriptions.push(this.statusBarItem);
+    this.context.subscriptions.push(vscode.commands.registerCommand(StatusBar.COMMAND_NAME, async () => {
+      try {
+        await this.quickPick.showItem(this);
+      } catch (err) {
+        console.log(err);
+      }
+    }));
+    this.statusBarItem.command = StatusBar.COMMAND_NAME;
+    this.context.subscriptions.push(this.statusBarItem);
 
-      await this.updateBuildStatus();
-      const self = this;
-      setInterval(() => {
-        self.updateBuildStatus();
-      }, 60000);
+    const self = this;
+    setInterval(async () => {
+      try {
+        await self.updateBuildStatus();
+      } catch (err) {
+        console.log(err);
+      }
+    }, 60000);
+    await this.updateBuildStatus();
   }
 
-  public async updateBuildStatus(): Promise<any> {
+  public async updateBuildStatus() {
     const recentBuilds: Types.RecentBuild[] = await this.apiClient.getRecentBuilds();
     this.updateItem(recentBuilds[0]);
     this.quickPick.updateRecentBuilds(recentBuilds);
@@ -44,13 +48,13 @@ export class StatusBar {
 
   public updateItem(recentBuild: Types.RecentBuild | undefined) {
     let text: string;
-    if (typeof recentBuild === 'undefined') {
+    if (!recentBuild) {
       text = 'CircleCI Status: Build not found';
     } else {
       switch (recentBuild.status) {
         case 'queued':
-            text = 'CircleCI Status: $(kebab-horizontal) QUEUED';
-            break;
+          text = 'CircleCI Status: $(kebab-horizontal) QUEUED';
+          break;
         case 'running':
           text = 'CircleCI Status: $(kebab-horizontal) RUNNING';
           break;
@@ -58,11 +62,11 @@ export class StatusBar {
           text = 'CircleCI Status: $(stop) FAILED';
           break;
         case 'success':
-            text = 'CircleCI Status: $(check) SUCCESS';
-            break;
+          text = 'CircleCI Status: $(check) SUCCESS';
+          break;
         case 'canceled':
-            text = 'CircleCI Status: $(circle-slash) CANCELED';
-            break;
+          text = 'CircleCI Status: $(circle-slash) CANCELED';
+          break;
         default:
           text = 'CircleCI Status: $(question) UNKNOWN';
           break;
