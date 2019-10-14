@@ -32,14 +32,14 @@ export class QuickPick {
     this.recentBuilds = recentBuilds;
   }
 
-  public showItem(statusBar: StatusBar) { 
-    vscode.window.showQuickPick([this.latestRetryItem, this.latestBuildUrlItem, this.showBuildListItem]).then(selectedItem => {
+  public async showItem(statusBar: StatusBar) { 
+    if (this.recentBuilds.length > 0) {
+      const selectedItem = await vscode.window.showQuickPick([this.latestRetryItem, this.latestBuildUrlItem, this.showBuildListItem]);
       switch (selectedItem!.label) {
         case QuickPick.LATEST_RETRY_ITEM_LABEL:
-            this.apiClient.retryBuild(this.recentBuilds[0].buildNum).then(() => {
-              statusBar.updateBuildStatus();
-            });
-            break;
+          await this.apiClient.retryBuild(this.recentBuilds[0].buildNum);
+          statusBar.updateBuildStatus();
+          break;
         case QuickPick.LATEST_BUILD_URL_ITEM_LABEL:
           vscode.env.openExternal(vscode.Uri.parse(this.recentBuilds[0].buildUrl));
           break;
@@ -56,6 +56,6 @@ export class QuickPick {
         default:
           break;
       }
-    });
+    }
   }
 }

@@ -8,12 +8,16 @@ import { StatusBar } from './StatusBar';
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export async function activate(context: vscode.ExtensionContext) {
-  const apiClient = new ApiClient();
-  await apiClient.setup();
+  try {
+    const apiClient = new ApiClient();
+    await apiClient.setup();
 
-  const quickPick = new QuickPick(apiClient);
-  const statusBar = new StatusBar(context, apiClient, quickPick);
-  await statusBar.setup();
+    const quickPick = new QuickPick(apiClient);
+    const statusBar = new StatusBar(context, apiClient, quickPick);
+    await statusBar.setup();
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 // this method is called when your extension is deactivated

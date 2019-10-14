@@ -21,47 +21,39 @@ export class ApiClient {
     this.projectPath = '';
   }
 
-  public setup(): Promise<any> {
+  public async setup() {
     // set username from '/me' result
-    return this.requestApiWithGet('me')
-      .then((response) => {
-        this.projectPath = 'project/' + this.vcsType + '/' + response.data.name + '/' + this.projectName;
-      })
-      .catch((err) => console.error(err));
+    const response = await this.requestApiWithGet('me');
+    this.projectPath = 'project/' + this.vcsType + '/' + response.data.name + '/' + this.projectName;
   }
 
-  public getRecentBuilds(): Promise<any> {
+  public async getRecentBuilds(): Promise<any> {
     let recentBuilds: Types.RecentBuild[] = [];
 
-    return this.requestApiWithGet(this.projectPath)
-      .then(response => {
-        response.data.forEach((element: any) => {
-          recentBuilds.push({
-            status: element.status,
-            buildUrl: element.build_url,
-            buildNum: element.build_num,
-            subject: element.subject === null ? '' : element.subject,
-            branch: element.branch,
-            committerName: element.committer_name === null ? '' : element.committer_name,
-            usageQueuedAt: element.usage_queued_at
-          });
-        });
-        return recentBuilds;
-      })
-      .catch(err => console.error(err));
+    const response = await this.requestApiWithGet(this.projectPath);
+    response.data.forEach((element: any) => {
+      recentBuilds.push({
+        status: element.status,
+        buildUrl: element.build_url,
+        buildNum: element.build_num,
+        subject: element.subject === null ? '' : element.subject,
+        branch: element.branch,
+        committerName: element.committer_name === null ? '' : element.committer_name,
+        usageQueuedAt: element.usage_queued_at
+      });
+    });
+    return recentBuilds;
   }
 
-  public retryBuild(buildNum: number): Promise<any> {
-    const path: string = this.projectPath + '/' + buildNum + '/' + 'retry';
+  public async retryBuild(buildNum: number): Promise<any> {
+    const path: string = this.projectPath + '/' + buildNum + '/' + 'retr';
 
-    return this.requestApiWithPost(path)
-      .then(() => {
-        vscode.window.showInformationMessage('Start to retry build');
-      })
-      .catch((err) => console.error(err));
+    await this.requestApiWithPost(path);
+    vscode.window.showInformationMessage('Start to retry build');
   }
 
   private async requestApiWithGet(path: string): Promise<any> {
+    console.log(path);
     try {
       const response = await axios.get(ApiClient.API_ENTRY_POINT + '/' + path + '?circle-token=' + this.apiToken);
       return response;
