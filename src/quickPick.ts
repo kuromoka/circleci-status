@@ -44,14 +44,16 @@ export class QuickPick {
           vscode.env.openExternal(vscode.Uri.parse(this.recentBuilds[0].buildUrl));
           break;
         case QuickPick.SHOW_BUILD_LIST_ITEM_LABEL:
-            let items: vscode.QuickPickItem[] = [];
+            let items: Types.BuildListQuickPickItem[] = [];
             this.recentBuilds.forEach((recentBuild: Types.RecentBuild) => {
               items.push({
+                buildUrl: recentBuild.buildUrl,
                 label: recentBuild.status.toUpperCase() + ': ' + recentBuild.branch + ' #' + recentBuild.buildNum,
                 detail: recentBuild.committerName + ' ' + recentBuild.subject
               });
             });
-            vscode.window.showQuickPick(items);
+            const selectedBuildListItem = await vscode.window.showQuickPick(items);
+            vscode.env.openExternal(vscode.Uri.parse(selectedBuildListItem!.buildUrl));
             break;
         default:
           break;

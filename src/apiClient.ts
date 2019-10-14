@@ -46,14 +46,13 @@ export class ApiClient {
   }
 
   public async retryBuild(buildNum: number): Promise<any> {
-    const path: string = this.projectPath + '/' + buildNum + '/' + 'retr';
+    const path: string = this.projectPath + '/' + buildNum + '/' + 'retry';
 
     await this.requestApiWithPost(path);
     vscode.window.showInformationMessage('Start to retry build');
   }
 
   private async requestApiWithGet(path: string): Promise<any> {
-    console.log(path);
     try {
       const response = await axios.get(ApiClient.API_ENTRY_POINT + '/' + path + '?circle-token=' + this.apiToken);
       return response;
