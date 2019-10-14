@@ -5,32 +5,40 @@ import * as Types from './types';
 export class ApiClient {
   static readonly API_ENTRY_POINT: string = 'https://circleci.com/api/v1.1';
 
-  private apiToken: string | undefined;
+  private apiToken: string;
   private vcsType: string;
-  private projectName: string | undefined;
-  private projectPath: string;
+  private projectName: string;
+  private userName: string;
 
   constructor() {
-    this.apiToken = vscode.workspace.getConfiguration('circleciStatus').get('apiToken');
+    this.apiToken = vscode.workspace.getConfiguration('circleciStatus').get('apiToken', '');
+    this.projectName = vscode.workspace.getConfiguration('circleciStatus').get('projectName', '');
+    if (this.projectName === '') {
+      this.projectName = typeof vscode.workspace.workspaceFolders === 'undefined' ? '' : vscode.workspace.workspaceFolders[0].name;
+    }
     vscode.workspace.onDidChangeConfiguration(() => {
-      this.apiToken = vscode.workspace.getConfiguration('circleciStatus').get('apiToken');
+      this.apiToken = vscode.workspace.getConfiguration('circleciStatus').get('apiToken', '');
+      this.projectName = vscode.workspace.getConfiguration('circleciStatus').get('projectName', '');
+      if (this.projectName === '') {
+        this.projectName = typeof vscode.workspace.workspaceFolders === 'undefined' ? '' : vscode.workspace.workspaceFolders[0].name;
+      }
     });
     // feature: selectable github/bitbucket
     this.vcsType = 'github';
-    this.projectName = vscode.workspace.name;
-    this.projectPath = '';
+    this.userName = '';
   }
 
   public async setup() {
     // set username from '/me' result
     const response = await this.requestApiWithGet('me');
-    this.projectPath = 'project/' + this.vcsType + '/' + response.data.name + '/' + this.projectName;
+    this.userName = response.data.name;
   }
 
   public async getRecentBuilds(): Promise<any> {
+    const path = 'project/' + this.vcsType + '/' + this.userName + '/' + this.projectName;
     let recentBuilds: Types.RecentBuild[] = [];
 
-    const response = await this.requestApiWithGet(this.projectPath);
+    const response = await this.requestApiWithGet(path);
     response.data.forEach((element: any) => {
       recentBuilds.push({
         status: element.status,
@@ -45,8 +53,8 @@ export class ApiClient {
     return recentBuilds;
   }
 
-  public async retryBuild(buildNum: number): Promise<any> {
-    const path: string = this.projectPath + '/' + buildNum + '/' + 'retry';
+  public async retryBuild(buildNum: number) {
+    const path = 'project/' + this.vcsType + '/' + this.userName + '/' + this.projectName + '/' + buildNum + '/' + 'retry';
 
     await this.requestApiWithPost(path);
     vscode.window.showInformationMessage('Start to retry build');

@@ -20,7 +20,11 @@
         "properties": {
           "circleciStatus.apiToken": {
             "type": "string",
-            "markdownDescription": "CircleCI's API Token. See the [CircleCI docs](https://circleci.com/docs/api/#add-an-api-token) for getting API Token."
+            "markdownDescription": "CircleCI API token. See the [CircleCI docs](https://circleci.com/docs/api/#add-an-api-token) for getting API token."
+          },
+          "circleciStatus.projectName": {
+            "type": "string",
+            "markdownDescription": "CircleCI project name. Defaults to your workspace folder name."
           }
         }
       }
