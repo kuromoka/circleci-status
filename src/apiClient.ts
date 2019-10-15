@@ -19,7 +19,7 @@ export class ApiClient {
   }
 
   public async setup() {
-    // set username from '/me' result
+    // set username from '/me' entry point result
     try {
       const response = await this.requestApiWithGet('me');
       this.userName = response.data.name;
