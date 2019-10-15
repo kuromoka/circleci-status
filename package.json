@@ -20,7 +20,7 @@
         "properties": {
           "circleciStatus.apiToken": {
             "type": "string",
-            "markdownDescription": "CircleCI API token. See the [CircleCI docs](https://circleci.com/docs/api/#add-an-api-token) for getting API token."
+            "markdownDescription": "CircleCI API token."
           },
           "circleciStatus.projectName": {
             "type": "string",
