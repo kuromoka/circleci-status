@@ -4,33 +4,21 @@ import { ApiClient } from './ApiClient';
 import { QuickPick } from './QuickPick';
 
 export class StatusBar {
-  static readonly COMMAND_NAME: string = 'circleciStatus.selectCommand';
-
-  private context: vscode.ExtensionContext;
   private apiClient: ApiClient;
   private quickPick: QuickPick;
   private statusBarItem: vscode.StatusBarItem;
+  private statusBarInterval: NodeJS.Timeout | undefined;
 
-  constructor(context: vscode.ExtensionContext, apiClient: ApiClient, quickPick: QuickPick) {
-    this.context = context;
+  constructor(apiClient: ApiClient, quickPick: QuickPick, statusBarItem: vscode.StatusBarItem) {
     this.apiClient = apiClient;
     this.quickPick = quickPick;
-    this.statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
+    this.statusBarItem = statusBarItem;
+    this.statusBarInterval = undefined;
   }
 
   public async setup() {
-    this.context.subscriptions.push(vscode.commands.registerCommand(StatusBar.COMMAND_NAME, async () => {
-      try {
-        await this.quickPick.showItem(this);
-      } catch (err) {
-        console.log(err);
-      }
-    }));
-    this.statusBarItem.command = StatusBar.COMMAND_NAME;
-    this.context.subscriptions.push(this.statusBarItem);
-
     const self = this;
-    setInterval(async () => {
+    this.statusBarInterval = setInterval(async () => {
       try {
         await self.updateBuildStatus();
       } catch (err) {
@@ -44,6 +32,12 @@ export class StatusBar {
     const recentBuilds: Types.RecentBuild[] = await this.apiClient.getRecentBuilds();
     this.updateItem(recentBuilds[0]);
     this.quickPick.updateRecentBuilds(recentBuilds);
+  }
+
+  public clearStatusBarInterval() {
+    if (this.statusBarInterval) {
+      clearInterval(this.statusBarInterval);
+    }
   }
 
   public updateItem(recentBuild: Types.RecentBuild | undefined) {

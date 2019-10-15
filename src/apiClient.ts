@@ -10,19 +10,9 @@ export class ApiClient {
   private projectName: string;
   private userName: string;
 
-  constructor() {
-    this.apiToken = vscode.workspace.getConfiguration('circleciStatus').get('apiToken', '');
-    this.projectName = vscode.workspace.getConfiguration('circleciStatus').get('projectName', '');
-    if (this.projectName === '') {
-      this.projectName = typeof vscode.workspace.workspaceFolders === 'undefined' ? '' : vscode.workspace.workspaceFolders[0].name;
-    }
-    vscode.workspace.onDidChangeConfiguration(() => {
-      this.apiToken = vscode.workspace.getConfiguration('circleciStatus').get('apiToken', '');
-      this.projectName = vscode.workspace.getConfiguration('circleciStatus').get('projectName', '');
-      if (this.projectName === '') {
-        this.projectName = typeof vscode.workspace.workspaceFolders === 'undefined' ? '' : vscode.workspace.workspaceFolders[0].name;
-      }
-    });
+  constructor(apiToken: string, projectName: string) {
+    this.apiToken = apiToken;
+    this.projectName = projectName;
     // feature: selectable github/bitbucket
     this.vcsType = 'github';
     this.userName = '';
@@ -30,27 +20,37 @@ export class ApiClient {
 
   public async setup() {
     // set username from '/me' result
-    const response = await this.requestApiWithGet('me');
-    this.userName = response.data.name;
+    try {
+      const response = await this.requestApiWithGet('me');
+      this.userName = response.data.name;
+    } catch (err) {
+      vscode.window.showErrorMessage('Failed to connect to API. Check your API token configuration.');
+      throw new Error(err);
+    }
   }
 
   public async getRecentBuilds(): Promise<any> {
-    const path = 'project/' + this.vcsType + '/' + this.userName + '/' + this.projectName;
-    let recentBuilds: Types.RecentBuild[] = [];
+    try {
+      const path = 'project/' + this.vcsType + '/' + this.userName + '/' + this.projectName;
+      let recentBuilds: Types.RecentBuild[] = [];
 
-    const response = await this.requestApiWithGet(path);
-    response.data.forEach((element: any) => {
-      recentBuilds.push({
-        status: element.status,
-        buildUrl: element.build_url,
-        buildNum: element.build_num,
-        subject: element.subject === null ? '' : element.subject,
-        branch: element.branch,
-        committerName: element.committer_name === null ? '' : element.committer_name,
-        usageQueuedAt: element.usage_queued_at
+      const response = await this.requestApiWithGet(path);
+      response.data.forEach((element: any) => {
+        recentBuilds.push({
+          status: element.status,
+          buildUrl: element.build_url,
+          buildNum: element.build_num,
+          subject: element.subject === null ? '' : element.subject,
+          branch: element.branch,
+          committerName: element.committer_name === null ? '' : element.committer_name,
+          usageQueuedAt: element.usage_queued_at
+        });
       });
-    });
-    return recentBuilds;
+      return recentBuilds;
+    } catch (err) {
+      vscode.window.showErrorMessage('Failed to get builds. Check your workspace folder name or project name configuration.');
+      throw new Error(err);
+    }
   }
 
   public async retryBuild(buildNum: number) {
