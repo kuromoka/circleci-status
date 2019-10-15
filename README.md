@@ -3,7 +3,7 @@
 CircleCI Status is a VSCode extension to check CircleCI build status. 
 
 ## Usage
-- Set up CircleCi project and put YAML file to `.circleci/config.yml`. [See datails.](https://circleci.com/docs/2.0/getting-started/#section=getting-started)
+- Set up CircleCi project and put YAML file to `.circleci/config.yml`.
 - Set vscode configuration.
   - `circleciStatus.apiToken` is required. See the [CircleCI docs](https://circleci.com/docs/api/#add-an-api-token) for getting API token.
   - `circleciStatus.projectName` is optional. Defaults to your workspace folder name. If it's diffrent from CircleCi project name, you need to set this configuration.
