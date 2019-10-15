@@ -4,12 +4,21 @@
   "description": "CircleCI Status is a VSCode extension to check CircleCI build status.",
   "version": "1.0.0",
   "publisher": "kuromoka",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "homepage": "https://github.com/kuromoka/circleci-status/blob/master/README.md",
+  "bugs": {
+    "url": "https://github.com/kuromoka/circleci-status/issues",
+    "email": "kuromokapb@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kuromoka/circleci-status.git"
+  },
+  "categories": ["Other"],
+  "keywords": ["CircleCI", "Circle CI", "Circle", "CI"],
   "engines": {
     "vscode": "^1.38.0"
   },
-  "categories": [
-    "Other"
-  ],
   "activationEvents": [
     "workspaceContains:.circleci/config.yml"
   ],
