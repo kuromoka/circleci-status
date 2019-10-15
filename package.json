@@ -1,8 +1,8 @@
 {
   "name": "circleci-status",
   "displayName": "circleci-status",
-  "description": "",
-  "version": "0.0.1",
+  "description": "CircleCI Status is a VSCode extension to check CircleCI build status.",
+  "version": "1.0.0",
   "engines": {
     "vscode": "^1.38.0"
   },
