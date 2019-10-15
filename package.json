@@ -1,10 +1,10 @@
 {
   "name": "circleci-status",
-  "displayName": "circleci-status",
+  "displayName": "CircleCI Status",
   "description": "CircleCI Status is a VSCode extension to check CircleCI build status.",
   "version": "1.0.0",
   "publisher": "kuromoka",
-  "license": "SEE LICENSE IN LICENSE.txt",
+  "license": "https://github.com/kuromoka/circleci-status/blob/master/LICENSE",
   "homepage": "https://github.com/kuromoka/circleci-status/blob/master/README.md",
   "bugs": {
     "url": "https://github.com/kuromoka/circleci-status/issues",
