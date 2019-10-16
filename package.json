@@ -39,6 +39,10 @@
             "type": "string",
             "markdownDescription": "CircleCI API token."
           },
+          "circleciStatus.userName": {
+            "type": "string",
+            "markdownDescription": "CircleCI username. Defaults to username from API result."
+          },
           "circleciStatus.projectName": {
             "type": "string",
             "markdownDescription": "CircleCI project name. Defaults to your workspace folder name."
