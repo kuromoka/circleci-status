@@ -32,6 +32,10 @@ export async function activate(context: vscode.ExtensionContext) {
       statusBar = new StatusBar(apiClient, quickPick, statusBarItem);
       await statusBar.setup();
     } catch (err) {
+      if (statusBar) {
+        // Not to continue showing error message.
+        statusBar.clearStatusBarInterval();
+      }
       console.log(err);
       return;
     }
