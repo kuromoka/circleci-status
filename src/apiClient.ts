@@ -10,19 +10,22 @@ export class ApiClient {
   private projectName: string;
   private userName: string;
 
-  constructor(apiToken: string, projectName: string) {
+  constructor(apiToken: string, userName: string, projectName: string) {
     this.apiToken = apiToken;
+    this.userName = userName;
     this.projectName = projectName;
     // feature: selectable github/bitbucket
     this.vcsType = 'github';
-    this.userName = '';
   }
 
   public async setup() {
-    // set username from '/me' entry point result
     try {
+      // check to communicate with api
       const response = await this.requestApiWithGet('me');
-      this.userName = response.data.name;
+      if (this.userName === '') {
+        // username from API result if username configuration isn't set.
+        this.userName = response.data.name;
+      }
     } catch (err) {
       vscode.window.showErrorMessage('Failed to connect to API. Check your API token configuration.');
       throw new Error(err);
@@ -48,7 +51,7 @@ export class ApiClient {
       });
       return recentBuilds;
     } catch (err) {
-      vscode.window.showErrorMessage('Failed to get builds. Check your workspace folder name or project name configuration.');
+      vscode.window.showErrorMessage('Failed to get builds.');
       throw new Error(err);
     }
   }
