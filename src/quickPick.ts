@@ -55,6 +55,7 @@ export class QuickPick {
           items.push({
             buildUrl: recentBuild.buildUrl,
             label: recentBuild.status.toUpperCase() + ': ' + recentBuild.branch + ' #' + recentBuild.buildNum,
+            description: recentBuild.workflowName + ' / ' + recentBuild.jobName,
             detail: recentBuild.committerName + ' ' + recentBuild.subject
           });
         });
