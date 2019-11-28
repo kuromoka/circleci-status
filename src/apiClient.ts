@@ -46,6 +46,8 @@ export class ApiClient {
           subject: element.subject === null ? '' : element.subject,
           branch: element.branch,
           committerName: element.committer_name === null ? '' : element.committer_name,
+          workflowName: element.workflows ? element.workflows.workflow_name : '',
+          jobName: element.workflows ? element.workflows.job_name : '',
           usageQueuedAt: element.usage_queued_at
         });
       });

@@ -7,7 +7,9 @@ export interface RecentBuild {
   subject: string;
   branch: string;
   committerName: string;
-  usageQueuedAt: string;
+  workflowName: string;
+  jobName: string;
+  usageQueuedAt: string;  
 }
 
 export interface BuildListQuickPickItem extends vscode.QuickPickItem {
