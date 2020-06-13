@@ -3,14 +3,16 @@ import axios from 'axios';
 import * as Types from './types';
 
 export class ApiClient {
-  static readonly API_ENTRY_POINT: string = 'https://circleci.com/api/v1.1';
+  // static readonly API_ENTRY_POINT: string = 'https://circleci.sec.samsung.net/api/v1.1';
 
+  private url: string;
   private apiToken: string;
   private vcsType: string;
   private projectName: string;
   private userName: string;
 
-  constructor(apiToken: string, userName: string, projectName: string) {
+  constructor(url: string, apiToken: string, userName: string, projectName: string) {
+    this.url = url;
     this.apiToken = apiToken;
     this.userName = userName;
     this.projectName = projectName;
@@ -67,7 +69,7 @@ export class ApiClient {
 
   private async requestApiWithGet(path: string): Promise<any> {
     try {
-      const response = await axios.get(ApiClient.API_ENTRY_POINT + '/' + path + '?circle-token=' + this.apiToken);
+      const response = await axios.get(this.url + '/' + path + '?circle-token=' + this.apiToken);
       return response;
     } catch (err) {
       throw new Error(err);
@@ -76,7 +78,7 @@ export class ApiClient {
 
   private async requestApiWithPost(path: string): Promise<any> {
     try {
-      const response = await axios.post(ApiClient.API_ENTRY_POINT + '/' + path + '?circle-token=' + this.apiToken);
+      const response = await axios.post(this.url + '/' + path + '?circle-token=' + this.apiToken);
       return response;
     } catch (err) {
       throw new Error(err);

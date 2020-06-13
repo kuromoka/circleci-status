@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as Types from './types';
-import { ApiClient } from './ApiClient';
-import { QuickPick } from './QuickPick';
+import { ApiClient } from './apiClient';
+import { QuickPick } from './quickPick';
 
 export class StatusBar {
   private apiClient: ApiClient;

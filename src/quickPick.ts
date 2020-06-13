@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as Types from './types';
-import { ApiClient } from './ApiClient';
-import { StatusBar } from './StatusBar';
+import { ApiClient } from './apiClient';
+import { StatusBar } from './statusBar';
 
 export class QuickPick {
   static readonly LATEST_RETRY_ITEM_LABEL: string = 'CircleCI Status: Retry latest build';

@@ -35,6 +35,10 @@
       {
         "title": "CircleCI Status configuration",
         "properties": {
+          "circleciStatus.url": {
+            "type": "string",
+            "markdownDescription": "CircleCI URL"
+          },
           "circleciStatus.apiToken": {
             "type": "string",
             "markdownDescription": "CircleCI API token."

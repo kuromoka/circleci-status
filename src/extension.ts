@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
-import { ApiClient } from './ApiClient';
-import { QuickPick } from './QuickPick';
-import { StatusBar } from './StatusBar';
+import { ApiClient } from './apiClient';
+import { QuickPick } from './quickPick';
+import { StatusBar } from './statusBar';
 
 export async function activate(context: vscode.ExtensionContext) {
   let apiClient: ApiClient;
@@ -23,9 +23,9 @@ export async function activate(context: vscode.ExtensionContext) {
   }));
   context.subscriptions.push(statusBarItem);
 
-  const main = async (apiToken: string, userName: string, projectName: string) => {
+  const main = async (url: string, apiToken: string, userName: string, projectName: string) => {
     try {
-      apiClient = new ApiClient(apiToken, userName, projectName);
+      apiClient = new ApiClient(url, apiToken, userName, projectName);
       await apiClient.setup();
 
       quickPick = new QuickPick(apiClient);
@@ -42,6 +42,10 @@ export async function activate(context: vscode.ExtensionContext) {
   };
 
   const getConfig = () => {
+    const url = vscode.workspace.getConfiguration('circleciStatus').get('url', '');
+    if (url === '') {
+      return;
+    }
     const apiToken = vscode.workspace.getConfiguration('circleciStatus').get('apiToken', '');
     if (apiToken === '') {
       return;
@@ -56,7 +60,7 @@ export async function activate(context: vscode.ExtensionContext) {
       // clear old instance interval
       statusBar.clearStatusBarInterval();
     }
-    main(apiToken, userName, projectName);
+    main(url, apiToken, userName, projectName);
   };
   getConfig();
   vscode.workspace.onDidChangeConfiguration(getConfig);
