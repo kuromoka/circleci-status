@@ -34,26 +34,24 @@ export class ApiClient {
     }
   }
 
-  public async getRecentBuilds(branch: string): Promise<any> {
+  public async getRecentBuilds(): Promise<any> {
     try {
       const path = 'project/' + this.vcsType + '/' + this.userName + '/' + this.projectName;
       let recentBuilds: Types.RecentBuild[] = [];
 
       const response = await this.requestApiWithGet(path);
       response.data.forEach((element: any) => {
-        if (element.branch === branch) {
-          recentBuilds.push({
-            status: element.status,
-            buildUrl: element.build_url,
-            buildNum: element.build_num,
-            subject: element.subject === null ? '' : element.subject,
-            branch: element.branch,
-            committerName: element.committer_name === null ? '' : element.committer_name,
-            workflowName: element.workflows ? element.workflows.workflow_name : '',
-            jobName: element.workflows ? element.workflows.job_name : '',
-            usageQueuedAt: element.usage_queued_at
-          });
-        }
+        recentBuilds.push({
+          status: element.status,
+          buildUrl: element.build_url,
+          buildNum: element.build_num,
+          subject: element.subject === null ? '' : element.subject,
+          branch: element.branch,
+          committerName: element.committer_name === null ? '' : element.committer_name,
+          workflowName: element.workflows ? element.workflows.workflow_name : '',
+          jobName: element.workflows ? element.workflows.job_name : '',
+          usageQueuedAt: element.usage_queued_at
+        });
       });
       return recentBuilds;
     } catch (err) {

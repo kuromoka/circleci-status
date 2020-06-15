@@ -8,14 +8,12 @@ export class StatusBar {
   private quickPick: QuickPick;
   private statusBarItem: vscode.StatusBarItem;
   private statusBarInterval: NodeJS.Timeout | undefined;
-  private currentBranch: string;
 
   constructor(apiClient: ApiClient, quickPick: QuickPick, statusBarItem: vscode.StatusBarItem) {
     this.apiClient = apiClient;
     this.quickPick = quickPick;
     this.statusBarItem = statusBarItem;
     this.statusBarInterval = undefined;
-    this.currentBranch = 'develop';
   }
 
   public async setup() {
@@ -31,7 +29,7 @@ export class StatusBar {
   }
 
   public async updateBuildStatus() {
-    const recentBuilds: Types.RecentBuild[] = await this.apiClient.getRecentBuilds(this.currentBranch);
+    const recentBuilds: Types.RecentBuild[] = await this.apiClient.getRecentBuilds();
     this.updateItem(recentBuilds[0]);
     this.quickPick.updateRecentBuilds(recentBuilds);
   }
