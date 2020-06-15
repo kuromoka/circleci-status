@@ -7,13 +7,15 @@ export class ApiClient {
 
   private apiToken: string;
   private url: string;
+  private gitBranch: string;
   private vcsType: string;
   private projectName: string;
   private userName: string;
 
-  constructor(apiToken: string, url: string, userName: string, projectName: string) {
+  constructor(apiToken: string, url: string, gitBranch: string, userName: string, projectName: string) {
     this.apiToken = apiToken;
     this.url = url;
+    this.gitBranch = gitBranch;
     this.userName = userName;
     this.projectName = projectName;
     // feature: selectable github/bitbucket
@@ -41,17 +43,19 @@ export class ApiClient {
 
       const response = await this.requestApiWithGet(path);
       response.data.forEach((element: any) => {
-        recentBuilds.push({
-          status: element.status,
-          buildUrl: element.build_url,
-          buildNum: element.build_num,
-          subject: element.subject === null ? '' : element.subject,
-          branch: element.branch,
-          committerName: element.committer_name === null ? '' : element.committer_name,
-          workflowName: element.workflows ? element.workflows.workflow_name : '',
-          jobName: element.workflows ? element.workflows.job_name : '',
-          usageQueuedAt: element.usage_queued_at
-        });
+        if (this.gitBranch === '' || element.branch === this.gitBranch) {
+          recentBuilds.push({
+            status: element.status,
+            buildUrl: element.build_url,
+            buildNum: element.build_num,
+            subject: element.subject === null ? '' : element.subject,
+            branch: element.branch,
+            committerName: element.committer_name === null ? '' : element.committer_name,
+            workflowName: element.workflows ? element.workflows.workflow_name : '',
+            jobName: element.workflows ? element.workflows.job_name : '',
+            usageQueuedAt: element.usage_queued_at
+          });
+        }
       });
       return recentBuilds;
     } catch (err) {

@@ -7,12 +7,14 @@ CircleCI Status is a VSCode extension to check CircleCI build status.
 - Set vscode configuration.
   - `circleciStatus.apiToken` is required. See [this page](https://circleci.com/docs/2.0/managing-api-tokens/#creating-a-personal-api-token) for getting API token.
   - `circleciStatus.url` is optional. Defaults to `https://circleci.sec.samsung.net/api/v1.1`. If it's different from default, you need to set this configuration to your circleci URL.
+  - `circleciStatus.gitBranch` is optional. Defaults to ''(show all branches). If it's different from default, you need to set this configuration to a branch name you want to see.
   - `circleciStatus.projectName` is optional. Defaults to your workspace folder name. If it's different from CircleCi project name, you need to set this configuration to that name.
   - `circleciStatus.userName` is optional. Defaults to username from API result. If you want to work on organization repository, you need to set this configuration to organization name.
 ```json
 {
     "circleciStatus.apiToken": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     "circleciStatus.url": "https://<your circleci url>/api/v1.1",
+    "circleciStatus.gitBranch": "master",
     "circleciStatus.projectName": "circleci-status",
     "circleciStatus.userName": "kuromoka"
 }

@@ -43,6 +43,10 @@
             "type": "string",
             "markdownDescription": "CircleCI API token."
           },
+          "circleciStatus.gitBranch": {
+            "type": "string",
+            "markdownDescription": "Git branch name."
+          },
           "circleciStatus.userName": {
             "type": "string",
             "markdownDescription": "CircleCI username. Defaults to username from API result."
@@ -81,7 +85,7 @@
     "@types/node": "^10.12.21",
     "@types/vscode": "^1.38.0",
     "glob": "^7.1.4",
-    "mocha": "^6.1.4",
+    "mocha": "^8.0.1",
     "tslint": "^5.12.1",
     "typescript": "^3.3.1",
     "vscode-test": "^1.2.0"
