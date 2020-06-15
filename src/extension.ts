@@ -42,13 +42,16 @@ export async function activate(context: vscode.ExtensionContext) {
   };
 
   const getConfig = () => {
+    const API_ENTRY_POINT: string = 'https://circleci.com/api/v1.1';
+
     const apiToken = vscode.workspace.getConfiguration('circleciStatus').get('apiToken', '');
     if (apiToken === '') {
+      vscode.window.showErrorMessage('apiToken should be set!');
       return;
     }
     let url = vscode.workspace.getConfiguration('circleciStatus').get('url', '');
     if (url === '') {
-      url = apiClient.API_ENTRY_POINT;
+      url = API_ENTRY_POINT;
     }
     let gitBranch = vscode.workspace.getConfiguration('circleciStatus').get('gitBranch', '');
     const userName = vscode.workspace.getConfiguration('circleciStatus').get('userName', '');
