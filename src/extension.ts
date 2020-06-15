@@ -23,9 +23,9 @@ export async function activate(context: vscode.ExtensionContext) {
   }));
   context.subscriptions.push(statusBarItem);
 
-  const main = async (url: string, apiToken: string, userName: string, projectName: string) => {
+  const main = async (apiToken: string, url: string, userName: string, projectName: string) => {
     try {
-      apiClient = new ApiClient(url, apiToken, userName, projectName);
+      apiClient = new ApiClient(apiToken, url, userName, projectName);
       await apiClient.setup();
 
       quickPick = new QuickPick(apiClient);
@@ -42,13 +42,13 @@ export async function activate(context: vscode.ExtensionContext) {
   };
 
   const getConfig = () => {
-    const url = vscode.workspace.getConfiguration('circleciStatus').get('url', '');
-    if (url === '') {
-      return;
-    }
     const apiToken = vscode.workspace.getConfiguration('circleciStatus').get('apiToken', '');
     if (apiToken === '') {
       return;
+    }
+    let url = vscode.workspace.getConfiguration('circleciStatus').get('url', '');
+    if (url === '') {
+      url = apiClient.API_ENTRY_POINT;
     }
     const userName = vscode.workspace.getConfiguration('circleciStatus').get('userName', '');
     let projectName = vscode.workspace.getConfiguration('circleciStatus').get('projectName', '');
@@ -60,7 +60,7 @@ export async function activate(context: vscode.ExtensionContext) {
       // clear old instance interval
       statusBar.clearStatusBarInterval();
     }
-    main(url, apiToken, userName, projectName);
+    main(apiToken, url, userName, projectName);
   };
   getConfig();
   vscode.workspace.onDidChangeConfiguration(getConfig);

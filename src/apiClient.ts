@@ -3,17 +3,17 @@ import axios from 'axios';
 import * as Types from './types';
 
 export class ApiClient {
-  // static readonly API_ENTRY_POINT: string = 'https://circleci.sec.samsung.net/api/v1.1';
+  readonly API_ENTRY_POINT: string = 'https://circleci.com/api/v1.1';
 
-  private url: string;
   private apiToken: string;
+  private url: string;
   private vcsType: string;
   private projectName: string;
   private userName: string;
 
-  constructor(url: string, apiToken: string, userName: string, projectName: string) {
-    this.url = url;
+  constructor(apiToken: string, url: string, userName: string, projectName: string) {
     this.apiToken = apiToken;
+    this.url = url;
     this.userName = userName;
     this.projectName = projectName;
     // feature: selectable github/bitbucket
@@ -34,24 +34,26 @@ export class ApiClient {
     }
   }
 
-  public async getRecentBuilds(): Promise<any> {
+  public async getRecentBuilds(branch: string): Promise<any> {
     try {
       const path = 'project/' + this.vcsType + '/' + this.userName + '/' + this.projectName;
       let recentBuilds: Types.RecentBuild[] = [];
 
       const response = await this.requestApiWithGet(path);
       response.data.forEach((element: any) => {
-        recentBuilds.push({
-          status: element.status,
-          buildUrl: element.build_url,
-          buildNum: element.build_num,
-          subject: element.subject === null ? '' : element.subject,
-          branch: element.branch,
-          committerName: element.committer_name === null ? '' : element.committer_name,
-          workflowName: element.workflows ? element.workflows.workflow_name : '',
-          jobName: element.workflows ? element.workflows.job_name : '',
-          usageQueuedAt: element.usage_queued_at
-        });
+        if (element.branch === branch) {
+          recentBuilds.push({
+            status: element.status,
+            buildUrl: element.build_url,
+            buildNum: element.build_num,
+            subject: element.subject === null ? '' : element.subject,
+            branch: element.branch,
+            committerName: element.committer_name === null ? '' : element.committer_name,
+            workflowName: element.workflows ? element.workflows.workflow_name : '',
+            jobName: element.workflows ? element.workflows.job_name : '',
+            usageQueuedAt: element.usage_queued_at
+          });
+        }
       });
       return recentBuilds;
     } catch (err) {
@@ -73,6 +75,8 @@ export class ApiClient {
       return response;
     } catch (err) {
       throw new Error(err);
+    } finally {
+      console.log('GET: ' + this.url + '/' + path + '?circle-token=' + this.apiToken);
     }
   }
 
@@ -82,6 +86,8 @@ export class ApiClient {
       return response;
     } catch (err) {
       throw new Error(err);
+    } finally {
+      console.log('POST: ' + this.url + '/' + path + '?circle-token=' + this.apiToken);
     }
   }
 }
