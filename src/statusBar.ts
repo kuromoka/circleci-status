@@ -43,26 +43,26 @@ export class StatusBar {
   public updateItem(recentBuild: Types.RecentBuild | undefined) {
     let text: string;
     if (!recentBuild) {
-      text = 'CircleCI Status: Build not found';
+      text = 'CircleCI: Build not found';
     } else {
       switch (recentBuild.status) {
         case 'queued':
-          text = 'CircleCI Status: $(kebab-horizontal) QUEUED';
+          text = 'CircleCI: $(kebab-horizontal) QUEUED';
           break;
         case 'running':
-          text = 'CircleCI Status: $(kebab-horizontal) RUNNING';
+          text = 'CircleCI: $(kebab-horizontal) RUNNING';
           break;
         case 'failed':
-          text = 'CircleCI Status: $(stop) FAILED';
+          text = 'CircleCI: $(stop) FAILED';
           break;
         case 'success':
-          text = 'CircleCI Status: $(check) SUCCESS';
+          text = 'CircleCI: $(check) SUCCESS';
           break;
         case 'canceled':
-          text = 'CircleCI Status: $(circle-slash) CANCELED';
+          text = 'CircleCI: $(circle-slash) CANCELED';
           break;
         default:
-          text = 'CircleCI Status: $(question) UNKNOWN';
+          text = 'CircleCI: $(question) UNKNOWN';
           break;
       }
     }
