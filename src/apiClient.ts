@@ -1,21 +1,22 @@
 import * as vscode from 'vscode';
 import axios from 'axios';
 import * as Types from './types';
+import { pathToFileURL } from 'url';
+import * as path from 'path';
 
 let console = vscode.window.createOutputChannel('circleci');
 
 export class ApiClient {
   private apiToken: string;
   private url: string;
-  private gitBranch: string;
+  private gitBranch: string | undefined;
   private vcsType: string;
   private projectName: string;
   private userName: string;
 
-  constructor(apiToken: string, url: string, gitBranch: string, userName: string, projectName: string) {
+  constructor(apiToken: string, url: string, userName: string, projectName: string) {
     this.apiToken = apiToken;
     this.url = url;
-    this.gitBranch = gitBranch;
     this.userName = userName;
     this.projectName = projectName;
     // feature: selectable github/bitbucket
@@ -24,6 +25,8 @@ export class ApiClient {
 
   public async setup() {
     try {
+      this.gitBranch = await this.getCurrentBranch();
+
       // check to communicate with api
       const response = await this.requestApiWithGet('me', null);
       if (this.userName === '') {
@@ -36,6 +39,23 @@ export class ApiClient {
     }
   }
 
+  private async getCurrentBranch(): Promise<string | undefined> {
+    let branch: string | undefined;
+
+    let folderPath = vscode.workspace.rootPath;
+    if (folderPath !== undefined) {
+      await vscode.workspace.openTextDocument(path.join(folderPath, '/.git/HEAD')).then((document) => {
+        let text = document.getText();
+        branch = text.split('/').pop();
+        if (branch !== undefined) {
+          branch = branch.trim();
+        }
+      });
+    }
+
+    return branch;
+  }
+
   public async getRecentBuilds(): Promise<any> {
     try {
       const path = 'project/' + this.vcsType + '/' + this.userName + '/' + this.projectName;
@@ -44,13 +64,12 @@ export class ApiClient {
 
       while (recentBuilds.length === 0) {
         const response = await this.requestApiWithGet(path, offset);
-        const length = Object.keys(response.data).length;
         if (Object.keys(response.data).length === 0) {
           break;
         }
 
         response.data.forEach((element: any) => {
-          if (this.gitBranch === '' || element.branch === this.gitBranch) {
+          if (this.gitBranch === undefined || element.branch === this.gitBranch) {
             recentBuilds.push({
               status: element.status,
               buildUrl: element.build_url,
