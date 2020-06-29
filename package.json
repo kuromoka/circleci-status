@@ -5,7 +5,7 @@
   "version": "1.0.5",
   "publisher": "kuromoka",
   "license": "https://github.com/kuromoka/circleci-status/blob/master/LICENSE",
-  "homepage": "https://github.com/kuromoka/circleci-status/blob/master/README.md",
+  "homepage": "https://github.com/doyou89/circleci-status/blob/master/README.md",
   "bugs": {
     "url": "https://github.com/kuromoka/circleci-status/issues",
     "email": "kuromokapb@gmail.com"
@@ -42,10 +42,6 @@
           "circleciStatus.apiToken": {
             "type": "string",
             "markdownDescription": "CircleCI API token."
-          },
-          "circleciStatus.gitBranch": {
-            "type": "string",
-            "markdownDescription": "Git branch name."
           },
           "circleciStatus.userName": {
             "type": "string",
