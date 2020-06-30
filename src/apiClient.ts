@@ -42,8 +42,9 @@ export class ApiClient {
   private async getCurrentBranch(): Promise<string | undefined> {
     let branch: string | undefined;
 
-    let folderPath = vscode.workspace.rootPath;
-    if (folderPath !== undefined) {
+    if (vscode.workspace.workspaceFolders) {
+      let folderPath = vscode.workspace.workspaceFolders[0].uri.fsPath;
+
       await vscode.workspace.openTextDocument(path.join(folderPath, '/.git/HEAD')).then((document) => {
         let text = document.getText();
         branch = text.split('/').pop();
