@@ -25,8 +25,6 @@ export class ApiClient {
 
   public async setup() {
     try {
-      this.gitBranch = await this.getCurrentBranch();
-
       // check to communicate with api
       const response = await this.requestApiWithGet('me', null);
       if (this.userName === '') {
@@ -59,6 +57,8 @@ export class ApiClient {
 
   public async getRecentBuilds(): Promise<any> {
     try {
+      this.gitBranch = await this.getCurrentBranch();
+
       const path = 'project/' + this.vcsType + '/' + this.userName + '/' + this.projectName;
       let recentBuilds: Types.RecentBuild[] = [];
       let offset = 0;
