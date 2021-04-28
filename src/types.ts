@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 
 export interface RecentBuild {
-  status: string;
+  status: 'queued' | 'running' | 'failed' | 'success' | 'canceled';
   buildUrl: string;
   buildNum: number;
   subject: string;
