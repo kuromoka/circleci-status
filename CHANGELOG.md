@@ -6,7 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
-## [1.1.0] - 2020-06-29
+## [1.1.0] - 2021-04-29
 
 ### Added
 - support enterprise version
