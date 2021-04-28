@@ -49,20 +49,25 @@ export async function activate(context: vscode.ExtensionContext) {
       vscode.window.showErrorMessage('apiToken should be set!');
       return;
     }
+
     let url = vscode.workspace.getConfiguration('circleciStatus').get('url', '');
     if (url === '') {
       url = API_ENTRY_POINT;
     }
+
     const userName = vscode.workspace.getConfiguration('circleciStatus').get('userName', '');
+
     let projectName = vscode.workspace.getConfiguration('circleciStatus').get('projectName', '');
     if (projectName === '') {
       // getting from workspace folder name
       projectName = typeof vscode.workspace.workspaceFolders === 'undefined' ? '' : vscode.workspace.workspaceFolders[0].name;
     }
+    
     if (statusBar) {
       // clear old instance interval
       statusBar.clearStatusBarInterval();
     }
+
     main(apiToken, url, userName, projectName);
   };
   getConfig();
