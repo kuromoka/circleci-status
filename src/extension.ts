@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
-import { ApiClient } from './ApiClient';
-import { QuickPick } from './QuickPick';
-import { StatusBar } from './StatusBar';
+import { ApiClient } from './apiClient';
+import { QuickPick } from './quickPick';
+import { StatusBar } from './statusBar';
 
 export async function activate(context: vscode.ExtensionContext) {
   let apiClient: ApiClient;
@@ -23,9 +23,9 @@ export async function activate(context: vscode.ExtensionContext) {
   }));
   context.subscriptions.push(statusBarItem);
 
-  const main = async (apiToken: string, userName: string, projectName: string) => {
+  const main = async (apiToken: string, url: string, userName: string, projectName: string) => {
     try {
-      apiClient = new ApiClient(apiToken, userName, projectName);
+      apiClient = new ApiClient(apiToken, url, userName, projectName);
       await apiClient.setup();
 
       quickPick = new QuickPick(apiClient);
@@ -42,9 +42,16 @@ export async function activate(context: vscode.ExtensionContext) {
   };
 
   const getConfig = () => {
+    const API_ENTRY_POINT: string = 'https://circleci.com/api/v1.1';
+
     const apiToken = vscode.workspace.getConfiguration('circleciStatus').get('apiToken', '');
     if (apiToken === '') {
+      vscode.window.showErrorMessage('apiToken should be set!');
       return;
+    }
+    let url = vscode.workspace.getConfiguration('circleciStatus').get('url', '');
+    if (url === '') {
+      url = API_ENTRY_POINT;
     }
     const userName = vscode.workspace.getConfiguration('circleciStatus').get('userName', '');
     let projectName = vscode.workspace.getConfiguration('circleciStatus').get('projectName', '');
@@ -56,7 +63,7 @@ export async function activate(context: vscode.ExtensionContext) {
       // clear old instance interval
       statusBar.clearStatusBarInterval();
     }
-    main(apiToken, userName, projectName);
+    main(apiToken, url, userName, projectName);
   };
   getConfig();
   vscode.workspace.onDidChangeConfiguration(getConfig);
