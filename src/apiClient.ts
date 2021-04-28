@@ -43,7 +43,7 @@ export class ApiClient {
 
       await vscode.workspace.openTextDocument(path.join(folderPath, '/.git/HEAD')).then((document) => {
         let text = document.getText();
-        branch = text.split('/').pop();
+        branch = text.replace('ref: refs/heads/', '');
         if (branch !== undefined) {
           branch = branch.trim();
         }
