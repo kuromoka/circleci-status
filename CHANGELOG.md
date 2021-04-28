@@ -6,9 +6,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
-- [1.1.1] - 2020-07-15
-  - bug fix. call getCurrentBranch in getRecentBuilds
-
 ## [1.1.0] - 2020-06-29
 
 ### Added
