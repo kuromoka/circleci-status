@@ -6,6 +6,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [1.1.1] - 2021-05-22
+
+### Added
+- Improve showing current branch status function
+
 ## [1.1.0] - 2021-04-29
 
 ### Added
