@@ -24,7 +24,7 @@
     "CI"
   ],
   "engines": {
-    "vscode": "^1.38.0"
+    "vscode": "^1.56.0"
   },
   "activationEvents": [
     "workspaceContains:.circleci/config.yml"
