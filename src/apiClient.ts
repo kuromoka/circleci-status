@@ -55,28 +55,30 @@ export class ApiClient {
 
   public async getRecentBuilds(): Promise<any> {
     try {
-      this.gitBranch = await this.getCurrentBranch();
+      let path = 'project/' + this.vcsType + '/' + this.userName + '/' + this.projectName;
 
-      const path = 'project/' + this.vcsType + '/' + this.userName + '/' + this.projectName;
+      this.gitBranch = await this.getCurrentBranch();
+      if (this.gitBranch !== undefined) {
+        path += '/tree/' + this.gitBranch;
+      }
+
       let recentBuilds: Types.RecentBuild[] = [];
 
       const response = await this.requestApiWithGet(path);
       response.data.forEach((element: any) => {
-        if (this.gitBranch === undefined || element.branch === this.gitBranch) {
-          recentBuilds.push({
-            status: element.status,
-            buildUrl: element.build_url,
-            buildNum: element.build_num,
-            subject: element.subject === null ? '' : element.subject,
-            branch: element.branch,
-            committerName: element.committer_name === null ? '' : element.committer_name,
-            workflowName: element.workflows ? element.workflows.workflow_name : '',
-            jobName: element.workflows ? element.workflows.job_name : '',
-            usageQueuedAt: element.usage_queued_at
-          });
-        }
+        recentBuilds.push({
+          status: element.status,
+          buildUrl: element.build_url,
+          buildNum: element.build_num,
+          subject: element.subject === null ? '' : element.subject,
+          branch: element.branch,
+          committerName: element.committer_name === null ? '' : element.committer_name,
+          workflowName: element.workflows ? element.workflows.workflow_name : '',
+          jobName: element.workflows ? element.workflows.job_name : '',
+          usageQueuedAt: element.usage_queued_at
+        });
       });
-  
+
       return recentBuilds;
     } catch (err) {
       vscode.window.showErrorMessage('Failed to get builds.');
